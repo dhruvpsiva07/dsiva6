@@ -9,17 +9,18 @@
 <link rel="stylesheet" href="style.css">
 <script>document.documentElement.classList.add('js');</script>
 </head>
-<body>
+<body id="top">
 
 <header class="nav">
   <div class="wrap nav__inner">
-    <a class="brand" href="index.html" aria-label="Dhruv Siva — home">
+    <a class="brand" href="#top" aria-label="Dhruv Siva — top of page">
       <span class="brand__mark"><img src="static/img/polestar-logo.jpg" alt=""></span>
       <span class="brand__word">Dhruv Siva</span>
     </a>
     <nav class="nav__links">
       <a href="projects.html" data-nav="projects">Projects</a>
-      <a href="polestar.html">Polestar</a>
+      <a href="#experience" class="nav-only-mobile" data-nav="experience">Experience</a>
+      <a href="polestar.html" class="nav-only-desktop">Polestar</a>
       <a href="#contact" class="nav-only-mobile" data-nav="contact">Contact</a>
     </nav>
   </div>
@@ -27,7 +28,7 @@
 
 <main>
 
-  <!-- ===== HERO ===== -->
+  <!-- ===== 1 · NAME ===== -->
   <section class="hero">
     <div class="wrap hero__grid">
       <div class="reveal">
@@ -39,11 +40,11 @@
           and the networks underneath them. Currently looking for Summer 2027 internships.
         </p>
         <div class="hero__cta">
-          <a class="btn btn--primary" href="projects.html">View work</a>
+          <a class="btn btn--primary" href="projects.html" data-nav="projects-cta">View work</a>
           <a class="btn btn--ghost" href="static/resume.pdf" target="_blank" rel="noopener">Résumé</a>
         </div>
         <div class="socials" id="hero-socials"></div>
-        <a class="scroll-cue nav-only-mobile" href="#work">
+        <a class="scroll-cue nav-only-mobile" href="#intro">
           Scroll
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="4" x2="12" y2="19"/>
@@ -58,30 +59,42 @@
     </div>
   </section>
 
-  <!-- ===== QUICK FACTS ===== -->
-  <section class="wrap" style="padding-bottom: clamp(2rem,6vw,4rem)">
-    <div class="facts reveal">
-      <div class="fact">
-        <div class="fact__k">Studying</div>
-        <div class="fact__v">B.S. Computer Science <span>· Georgia Tech</span></div>
+  <!-- quick facts — desktop keeps them directly under the hero -->
+  <section class="wrap only-desktop" style="padding-bottom: clamp(2rem,6vw,4rem)">
+    <div class="facts reveal" id="facts-desktop"></div>
+  </section>
+
+  <!-- ===== 2 · DESCRIPTION (phone; no nav link, same as Matthew's) ===== -->
+  <section class="section section--alt only-mobile" id="intro">
+    <div class="wrap">
+      <div class="reveal">
+        <div class="eyebrow">About</div>
+        <h2 class="section-title">I build things that hold up.</h2>
+        <div class="prose">
+          <p>
+            I'm a first-year CS student at <strong>Georgia Tech</strong> on the Cybersecurity &amp;
+            Privacy and Artificial Intelligence threads. Most of what I make sits where those two
+            meet — agentic systems, LLM tooling, automation that removes real hours of work.
+          </p>
+          <p>
+            Before college I co-founded my high school's IT club, grew it to 80+ members, ran
+            Capture-the-Flag teams, and wired up a two-classroom network serving about 70 devices.
+            I still compete in CTFs.
+          </p>
+          <p>
+            Away from the terminal I film and edit <a href="polestar.html">Polestar</a>, a vlog
+            series I produce independently — 105 episodes so far.
+          </p>
+        </div>
       </div>
-      <div class="fact">
-        <div class="fact__k">Threads</div>
-        <div class="fact__v">Cybersecurity &amp; Privacy <span>· Artificial Intelligence</span></div>
-      </div>
-      <div class="fact">
-        <div class="fact__k">Graduating</div>
-        <div class="fact__v">December 2028 <span>· 4.0 GPA</span></div>
-      </div>
-      <div class="fact">
-        <div class="fact__k">Looking for</div>
-        <div class="fact__v">Summer 2027 internships</div>
-      </div>
+      <div class="facts reveal" id="facts-mobile" style="margin-top:2rem"></div>
     </div>
   </section>
 
-  <!-- ===== SELECTED WORK ===== -->
-  <section class="section section--alt" id="work">
+  <!-- ===== 3 · PROJECTS ===== -->
+
+  <!-- desktop: the rotating highlight reel -->
+  <section class="section section--alt only-desktop" id="work">
     <div class="wrap">
       <div class="section-head reveal">
         <div class="eyebrow">Selected work</div>
@@ -91,62 +104,47 @@
           infrastructure side. Everything else lives on the projects page.
         </p>
       </div>
-
-      <!-- desktop: rotating highlight -->
       <div class="featured reveal" id="featured"></div>
-
-      <!-- mobile: stacked cards -->
-      <div class="stack" id="stack"></div>
-
-      <div style="margin-top:2.25rem" class="reveal only-desktop">
+      <div style="margin-top:2.25rem" class="reveal">
         <a class="btn btn--ghost" href="projects.html">All projects, experience &amp; awards</a>
       </div>
     </div>
   </section>
 
-
-  <!-- ===== PHONE ONLY: everything else, inline ===== -->
-  <section class="section only-mobile" id="all-projects">
+  <!-- phone: highlights, then everything else -->
+  <section class="section only-mobile" id="projects">
     <div class="wrap">
       <div class="section-head reveal">
-        <div class="eyebrow">All projects</div>
-        <h2 class="section-title">Everything I've built</h2>
-        <p class="section-sub">Tap a project to open it.</p>
+        <div class="eyebrow">Projects</div>
+        <h2 class="section-title">Things I've built</h2>
+        <p class="section-sub">Tap any project to open it.</p>
       </div>
+
+      <div class="stack" id="stack"></div>
+
+      <div class="sub-label reveal">More projects</div>
       <div class="plist" id="plist"></div>
     </div>
   </section>
 
-  <section class="section section--alt only-mobile">
+  <!-- ===== 4 · EXPERIENCE ===== -->
+  <section class="section section--alt only-mobile" id="experience">
     <div class="wrap">
       <div class="section-head reveal">
         <div class="eyebrow">Experience</div>
-        <h2 class="section-title">Where I've worked</h2>
+        <h2 class="section-title">Where I've been</h2>
+        <p class="section-sub">Work, leadership, and the competitions in between.</p>
       </div>
-      <div class="entries reveal" id="m-experience"></div>
+      <div class="tline" id="timeline"></div>
     </div>
   </section>
 
-  <section class="section only-mobile">
-    <div class="wrap">
-      <div class="section-head reveal">
-        <div class="eyebrow">Competitions</div>
-        <h2 class="section-title">Awards &amp; CTFs</h2>
-      </div>
-      <div class="entries reveal" id="m-awards"></div>
-      <div class="section-head reveal" style="margin:2.5rem 0 1rem">
-        <div class="eyebrow">Leadership</div>
-      </div>
-      <div class="entries reveal" id="m-leadership"></div>
-    </div>
-  </section>
-
-  <!-- ===== CONTACT ===== -->
+  <!-- ===== 5 · CONTACT ===== -->
   <section class="section" id="contact">
     <div class="wrap">
       <div class="section-head reveal">
         <div class="eyebrow">Contact</div>
-        <h2 class="section-title">Let's build something</h2>
+        <h2 class="section-title">Say hi</h2>
         <p class="section-sub">
           Open to internships, collaborations, and CTF teams. The fastest way to reach me is email.
         </p>

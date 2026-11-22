@@ -156,12 +156,31 @@ function initFeatured() {
 }
 
 
-/* ---------- phone: full project list + experience inline ---------- */
+/* ---------- quick facts ---------- */
+
+function renderFacts() {
+  if (typeof FACTS === 'undefined') return;
+  const html = FACTS.map(f =>
+    '<div class="fact">' +
+      '<div class="fact__k">' + esc(f.k) + '</div>' +
+      '<div class="fact__v">' + esc(f.v) +
+        (f.sub ? ' <span>\u00b7 ' + esc(f.sub) + '</span>' : '') +
+      '</div>' +
+    '</div>').join('');
+  ['facts-desktop', 'facts-mobile'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.innerHTML = html;
+  });
+}
+
+/* ---------- phone: projects + merged experience timeline ---------- */
 
 function initMobileSections() {
+  /* everything that is not already a highlight card above */
   const list = document.getElementById('plist');
   if (list) {
-    list.innerHTML = PROJECTS.map((p, i) =>
+    const rest = PROJECTS.filter(p => !p.featured);
+    list.innerHTML = rest.map((p, i) =>
       '<button class="prow reveal" type="button" data-sheet="' + esc(p.id) + '" ' +
         'aria-label="Open ' + esc(p.title) + '">' +
         '<span class="prow__n">' + String(i + 1).padStart(2, '0') + '</span>' +
@@ -172,45 +191,67 @@ function initMobileSections() {
         '<span class="prow__chev">' + ICONS.right + '</span>' +
       '</button>').join('');
   }
-  const fill = (id, rows) => {
-    const el = document.getElementById(id);
-    if (el && typeof entryHTML === 'function') el.innerHTML = rows.map(entryHTML).join('');
-  };
-  fill('m-experience', typeof EXPERIENCE !== 'undefined' ? EXPERIENCE : []);
-  fill('m-awards', typeof AWARDS !== 'undefined' ? AWARDS : []);
-  fill('m-leadership', typeof LEADERSHIP !== 'undefined' ? LEADERSHIP : []);
+
+  /* work, leadership and competitions as one numbered timeline */
+  const tl = document.getElementById('timeline');
+  if (!tl) return;
+  const rows = []
+    .concat(typeof EXPERIENCE !== 'undefined' ? EXPERIENCE : [])
+    .concat(typeof LEADERSHIP !== 'undefined' ? LEADERSHIP : [])
+    .concat(typeof AWARDS !== 'undefined' ? AWARDS : []);
+
+  tl.innerHTML = rows.map((e, i) => {
+    const now = /present|now/i.test(e.when || '');
+    return (
+      '<article class="trow reveal">' +
+        '<div class="trow__rail">' +
+          '<span class="trow__n">' + String(i + 1).padStart(2, '0') + '</span>' +
+          '<span class="trow__dot' + (now ? ' is-now' : '') + '"></span>' +
+        '</div>' +
+        '<div class="trow__main">' +
+          '<div class="trow__when">' + esc(e.when || '') +
+            (now ? '<span class="trow__now">now</span>' : '') + '</div>' +
+          '<h3 class="trow__role">' + esc(e.role) + '</h3>' +
+          '<div class="trow__org">' + esc(e.org || '') +
+            (e.where ? ' \u00b7 ' + esc(e.where) : '') + '</div>' +
+          (e.bullets && e.bullets.length
+            ? '<ul class="trow__list">' + e.bullets.map(b => '<li>' + esc(b) + '</li>').join('') + '</ul>'
+            : '') +
+          (e.cat ? '<div class="trow__cat">' + esc(e.cat) + '</div>' : '') +
+        '</div>' +
+      '</article>'
+    );
+  }).join('');
 }
 
 /* ---------- phone: nav links scroll instead of navigate ---------- */
 
 function initMobileNav() {
-  const link = document.querySelector('[data-nav="projects"]');
-  if (!link) return;
   const mq = window.matchMedia('(max-width: 899px)');
-
-  const apply = () => {
-    link.setAttribute('href', mq.matches ? '#all-projects' : 'projects.html');
-  };
+  const swap = [
+    ['[data-nav="projects"]', 'projects.html', '#projects'],
+    ['[data-nav="projects-cta"]', 'projects.html', '#projects']
+  ];
+  const apply = () => swap.forEach(([sel, desk, phone]) => {
+    const a = document.querySelector(sel);
+    if (a) a.setAttribute('href', mq.matches ? phone : desk);
+  });
   apply();
   mq.addEventListener ? mq.addEventListener('change', apply) : mq.addListener(apply);
 
   /* highlight whichever section is in view */
-  const targets = ['work', 'all-projects', 'contact']
-    .map(id => document.getElementById(id)).filter(Boolean);
+  const ids = ['projects', 'experience', 'contact'];
+  const targets = ids.map(id => document.getElementById(id)).filter(Boolean);
   if (!targets.length || !('IntersectionObserver' in window)) return;
-
-  const linkFor = id => document.querySelector(
-    id === 'contact' ? '[data-nav="contact"]' : '[data-nav="projects"]');
 
   const spy = new IntersectionObserver(entries => {
     if (!mq.matches) return;
     entries.forEach(en => {
-      const a = linkFor(en.target.id);
+      if (!en.isIntersecting) return;
+      const a = document.querySelector('[data-nav="' + en.target.id + '"]');
       if (!a) return;
-      if (en.isIntersecting) {
-        document.querySelectorAll('.nav__links a').forEach(x => x.classList.remove('active'));
-        a.classList.add('active');
-      }
+      document.querySelectorAll('.nav__links a').forEach(x => x.classList.remove('active'));
+      a.classList.add('active');
     });
   }, { rootMargin: '-45% 0px -50% 0px' });
   targets.forEach(t => spy.observe(t));
@@ -219,6 +260,7 @@ function initMobileNav() {
 /* ---------- boot ---------- */
 
 document.addEventListener('DOMContentLoaded', () => {
+  renderFacts();
   renderSocials(document.getElementById('hero-socials'));
   renderContact(document.getElementById('contact-grid'));
   initFeatured();

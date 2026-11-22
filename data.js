@@ -158,12 +158,23 @@ const PROJECTS = [
   }
 ];
 
+
+/* ---------- quick facts (hero strip on desktop, intro on phone) ---------- */
+
+const FACTS = [
+  { k: "Studying",    v: "B.S. Computer Science", sub: "Georgia Tech" },
+  { k: "Threads",     v: "Cybersecurity & Privacy", sub: "Artificial Intelligence" },
+  { k: "Graduating",  v: "December 2028", sub: "4.0 GPA" },
+  { k: "Looking for", v: "Summer 2027 internships" }
+];
+
 /* ---------- experience, leadership, awards, skills ---------- */
 
 const EXPERIENCE = [
   {
     role: "Automation & Content Intern",
     org: "BMore Funny Entertainment",
+    cat: "Automation",
     where: "Remote",
     when: "May — Oct 2025",
     bullets: [
@@ -174,6 +185,7 @@ const EXPERIENCE = [
   {
     role: "IT Support Intern",
     org: "McKnight Doctoral Fellowship Foundation",
+    cat: "IT & Events",
     where: "Tampa, FL",
     when: "Feb 2024",
     bullets: [
@@ -184,6 +196,7 @@ const EXPERIENCE = [
   {
     role: "Web Development Consultant",
     org: "Freelance",
+    cat: "Web",
     where: "Tampa, FL",
     when: "Aug 2023 — Present",
     bullets: [
@@ -197,6 +210,7 @@ const LEADERSHIP = [
   {
     role: "President & Co-Founder",
     org: "Middleton Information Technology Club",
+    cat: "Leadership",
     where: "Tampa, FL",
     when: "2022 — 2026",
     bullets: [
@@ -211,12 +225,14 @@ const AWARDS = [
   {
     role: "4th Place — Highest Difficulty Tier",
     org: "Lockheed Martin CyberQuest",
+    cat: "Competition",
     when: "2026",
     bullets: ["Competed in the top tier of the Lockheed Martin CyberQuest cybersecurity competition."]
   },
   {
     role: "3rd Place — State Level",
     org: "CyberFlorida / Cyberlaunch",
+    cat: "Competition",
     when: "2025 — 2026",
     bullets: [
       "Qualified through the November 2025 virtual preliminary round and placed at the April 2026 in-person state competition at USF, competing with the Middleton IT Club."
@@ -225,12 +241,14 @@ const AWARDS = [
   {
     role: "Competitor",
     org: "University of Alabama CTF (UACTF)",
+    cat: "Competition",
     when: "2026",
     bullets: ["Competed in the 2026 UACTF virtual capture-the-flag competition."]
   },
   {
     role: "Competitor",
     org: "Cyberlaunch — Hillsborough County",
+    cat: "Competition",
     when: "2023",
     bullets: ["Attended the first Hillsborough County Cyberlaunch alongside 14 peers — did not place, but it started the CTF track."]
   }
