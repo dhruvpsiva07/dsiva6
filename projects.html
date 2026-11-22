@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Projects — Dhruv Siva</title>
+<meta name="description" content="Projects, experience, awards, and certifications — Dhruv Siva, CS @ Georgia Tech.">
+<link rel="stylesheet" href="style.css">
+<script>document.documentElement.classList.add('js');</script>
+</head>
+<body>
+
+<header class="nav">
+  <div class="wrap nav__inner">
+    <a class="brand" href="index.html" aria-label="Dhruv Siva — home">
+      <span class="brand__mark">DS</span>
+      <span class="brand__word">Dhruv Siva</span>
+    </a>
+    <nav class="nav__links">
+      <a href="projects.html" class="active">Projects</a>
+      <a href="polestar.html">Polestar</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+
+  <section class="wrap" style="padding-block: clamp(2.5rem,6vw,4.5rem) clamp(1.5rem,4vw,2.5rem)">
+    <div class="reveal">
+      <div class="eyebrow">Work</div>
+      <h1 class="section-title" style="font-size:clamp(2rem,5vw,3rem)">Projects, experience &amp; awards</h1>
+      <p class="section-sub">
+        Everything I've shipped, competed in, or am currently building. Click any card for detail.
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== PROJECTS ===== -->
+  <section class="section section--alt" style="padding-top:clamp(2.5rem,6vw,4rem)">
+    <div class="wrap" id="projects-root"></div>
+  </section>
+
+  <!-- ===== EXPERIENCE ===== -->
+  <section class="section">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <div class="eyebrow">Experience</div>
+        <h2 class="section-title">Where I've worked</h2>
+      </div>
+      <div class="entries reveal" id="experience-root"></div>
+    </div>
+  </section>
+
+  <!-- ===== AWARDS ===== -->
+  <section class="section section--alt">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <div class="eyebrow">Competitions</div>
+        <h2 class="section-title">Awards &amp; CTFs</h2>
+      </div>
+      <div class="entries reveal" id="awards-root"></div>
+    </div>
+  </section>
+
+  <!-- ===== LEADERSHIP ===== -->
+  <section class="section">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <div class="eyebrow">Leadership</div>
+        <h2 class="section-title">Building teams</h2>
+      </div>
+      <div class="entries reveal" id="leadership-root"></div>
+    </div>
+  </section>
+
+  <!-- ===== SKILLS & CERTS ===== -->
+  <section class="section section--alt">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <div class="eyebrow">Toolkit</div>
+        <h2 class="section-title">Skills &amp; certifications</h2>
+      </div>
+      <div class="reveal" id="skills-root"></div>
+    </div>
+  </section>
+
+  <!-- ===== CONTACT ===== -->
+  <section class="section">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <div class="eyebrow">Contact</div>
+        <h2 class="section-title">Let's build something</h2>
+      </div>
+      <div class="contact__grid" id="contact-grid"></div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="footer">
+  <div class="wrap footer__inner">
+    <span>© <span id="year"></span> Dhruv Siva</span>
+    <span>Built from scratch with HTML, CSS &amp; JS · <a href="https://github.com/dhruvpsiva07/dsiva6" target="_blank" rel="noopener">source</a></span>
+  </div>
+</footer>
+
+<script src="data.js"></script>
+<script src="modal.js"></script>
+<script src="projects.js"></script>
+<script src="main.js"></script>
+</body>
+</html>
