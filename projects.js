@@ -8,23 +8,7 @@ const GROUPS = [
   { id: 'creative', label: 'Creative' }
 ];
 
-function entryHTML(e) {
-  return (
-    '<article class="entry">' +
-      '<div class="entry__top">' +
-        '<div>' +
-          '<div class="entry__role">' + esc(e.role) +
-            (e.org ? ' <span class="entry__org">· ' + esc(e.org) + '</span>' : '') + '</div>' +
-          (e.where ? '<div class="entry__where">' + esc(e.where) + '</div>' : '') +
-        '</div>' +
-        '<div class="entry__when">' + esc(e.when || '') + '</div>' +
-      '</div>' +
-      (e.bullets && e.bullets.length
-        ? '<ul>' + e.bullets.map(b => '<li>' + esc(b) + '</li>').join('') + '</ul>'
-        : '') +
-    '</article>'
-  );
-}
+/* entryHTML() and the card/modal helpers live in modal.js (shared). */
 
 function initPage() {
   /* projects, grouped */

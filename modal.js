@@ -102,12 +102,9 @@ function projectCardHTML(p) {
   );
 }
 
-/* ---------- project modal ---------- */
+/* ---------- shared project detail body ---------- */
 
-function openProjectModal(id) {
-  const p = PROJECTS.find(x => x.id === id);
-  if (!p) return;
-
+function projectDetailHTML(p) {
   let html =
     '<div class="modal__media"' + mediaStyle(p.image) + '>' +
       (p.image ? '' : '<span class="card__ph">Image</span>') +
@@ -131,15 +128,105 @@ function openProjectModal(id) {
       ICONS.github + esc(l.label) + '</a>').join('') + '</div>';
   }
   if (p.todo) {
-    html += '<div class="note">Placeholder content — details and links for this project are still being written up.</div>';
+    html += '<div class="note">Placeholder content \u2014 details and links for this project are still being written up.</div>';
   }
-  html += '</div>';
-
-  Modal.open(html);
+  return html + '</div>';
 }
+
+function openProjectModal(id) {
+  const p = PROJECTS.find(x => x.id === id);
+  if (p) Modal.open(projectDetailHTML(p));
+}
+
+/* ---------- entry row (experience / awards / leadership) ---------- */
+
+function entryHTML(e) {
+  return (
+    '<article class="entry">' +
+      '<div class="entry__top">' +
+        '<div>' +
+          '<div class="entry__role">' + esc(e.role) +
+            (e.org ? ' <span class="entry__org">\u00b7 ' + esc(e.org) + '</span>' : '') + '</div>' +
+          (e.where ? '<div class="entry__where">' + esc(e.where) + '</div>' : '') +
+        '</div>' +
+        '<div class="entry__when">' + esc(e.when || '') + '</div>' +
+      '</div>' +
+      (e.bullets && e.bullets.length
+        ? '<ul>' + e.bullets.map(b => '<li>' + esc(b) + '</li>').join('') + '</ul>'
+        : '') +
+    '</article>'
+  );
+}
+
+/* =========================================================
+   Sheet — full-screen slide-up panel (phone only).
+   Used by the mobile project list on the home page.
+   ========================================================= */
+
+const Sheet = (() => {
+  let el, bodyEl, lastFocus, open = false;
+
+  const ICON_BACK =
+    '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" ' +
+    'stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/>' +
+    '<polyline points="12 19 5 12 12 5"/></svg>';
+
+  function build() {
+    if (el) return;
+    el = document.createElement('div');
+    el.className = 'sheet';
+    el.setAttribute('role', 'dialog');
+    el.setAttribute('aria-modal', 'true');
+    el.innerHTML =
+      '<div class="sheet__bar">' +
+        '<button class="sheet__back" type="button" aria-label="Back">' + ICON_BACK + '</button>' +
+        '<span class="sheet__label"></span>' +
+      '</div>' +
+      '<div class="sheet__body"></div>';
+    document.body.appendChild(el);
+    bodyEl = el.querySelector('.sheet__body');
+    el.querySelector('.sheet__back').addEventListener('click', () => close());
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') close(); });
+    // the phone back gesture / button closes the sheet instead of leaving the page
+    window.addEventListener('popstate', () => { if (open) close(true); });
+  }
+
+  function show(html, label) {
+    build();
+    lastFocus = document.activeElement;
+    bodyEl.innerHTML = html;
+    el.querySelector('.sheet__label').textContent = label || '';
+    bodyEl.scrollTop = 0;
+    el.classList.add('is-mounted');
+    document.body.style.overflow = 'hidden';
+    requestAnimationFrame(() => requestAnimationFrame(() => el.classList.add('is-open')));
+    open = true;
+    history.pushState({ sheet: true }, '');
+    el.querySelector('.sheet__back').focus({ preventScroll: true });
+  }
+
+  function close(fromPop) {
+    if (!open) return;
+    open = false;
+    el.classList.remove('is-open');
+    document.body.style.overflow = '';
+    setTimeout(() => { el.classList.remove('is-mounted'); bodyEl.innerHTML = ''; }, 340);
+    if (!fromPop && history.state && history.state.sheet) history.back();
+    if (lastFocus && lastFocus.focus) lastFocus.focus({ preventScroll: true });
+  }
+
+  function openProject(id) {
+    const p = PROJECTS.find(x => x.id === id);
+    if (p) show(projectDetailHTML(p), p.title);
+  }
+
+  return { show, close, openProject };
+})();
 
 /* delegate every card click on the page */
 document.addEventListener('click', e => {
+  const sheet = e.target.closest('[data-sheet]');
+  if (sheet) { Sheet.openProject(sheet.dataset.sheet); return; }
   const card = e.target.closest('[data-project]');
   if (card) openProjectModal(card.dataset.project);
 });

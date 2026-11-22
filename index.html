@@ -18,8 +18,9 @@
       <span class="brand__word">Dhruv Siva</span>
     </a>
     <nav class="nav__links">
-      <a href="projects.html">Projects</a>
+      <a href="projects.html" data-nav="projects">Projects</a>
       <a href="polestar.html">Polestar</a>
+      <a href="#contact" class="nav-only-mobile" data-nav="contact">Contact</a>
     </nav>
   </div>
 </header>
@@ -42,6 +43,12 @@
           <a class="btn btn--ghost" href="static/resume.pdf" target="_blank" rel="noopener">Résumé</a>
         </div>
         <div class="socials" id="hero-socials"></div>
+        <a class="scroll-cue nav-only-mobile" href="#work">
+          Scroll
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+               stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="4" x2="12" y2="19"/>
+          <polyline points="6 13 12 19 18 13"/></svg>
+        </a>
       </div>
 
       <div class="hero__photo reveal">
@@ -91,9 +98,46 @@
       <!-- mobile: stacked cards -->
       <div class="stack" id="stack"></div>
 
-      <div style="margin-top:2.25rem" class="reveal">
+      <div style="margin-top:2.25rem" class="reveal only-desktop">
         <a class="btn btn--ghost" href="projects.html">All projects, experience &amp; awards</a>
       </div>
+    </div>
+  </section>
+
+
+  <!-- ===== PHONE ONLY: everything else, inline ===== -->
+  <section class="section only-mobile" id="all-projects">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <div class="eyebrow">All projects</div>
+        <h2 class="section-title">Everything I've built</h2>
+        <p class="section-sub">Tap a project to open it.</p>
+      </div>
+      <div class="plist" id="plist"></div>
+    </div>
+  </section>
+
+  <section class="section section--alt only-mobile">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <div class="eyebrow">Experience</div>
+        <h2 class="section-title">Where I've worked</h2>
+      </div>
+      <div class="entries reveal" id="m-experience"></div>
+    </div>
+  </section>
+
+  <section class="section only-mobile">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <div class="eyebrow">Competitions</div>
+        <h2 class="section-title">Awards &amp; CTFs</h2>
+      </div>
+      <div class="entries reveal" id="m-awards"></div>
+      <div class="section-head reveal" style="margin:2.5rem 0 1rem">
+        <div class="eyebrow">Leadership</div>
+      </div>
+      <div class="entries reveal" id="m-leadership"></div>
     </div>
   </section>
 

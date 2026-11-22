@@ -155,12 +155,75 @@ function initFeatured() {
   }
 }
 
+
+/* ---------- phone: full project list + experience inline ---------- */
+
+function initMobileSections() {
+  const list = document.getElementById('plist');
+  if (list) {
+    list.innerHTML = PROJECTS.map((p, i) =>
+      '<button class="prow reveal" type="button" data-sheet="' + esc(p.id) + '" ' +
+        'aria-label="Open ' + esc(p.title) + '">' +
+        '<span class="prow__n">' + String(i + 1).padStart(2, '0') + '</span>' +
+        '<span class="prow__main">' +
+          '<span class="prow__t">' + esc(p.title) + '</span>' +
+          '<span class="prow__m">' + esc(p.meta || '') + '</span>' +
+        '</span>' +
+        '<span class="prow__chev">' + ICONS.right + '</span>' +
+      '</button>').join('');
+  }
+  const fill = (id, rows) => {
+    const el = document.getElementById(id);
+    if (el && typeof entryHTML === 'function') el.innerHTML = rows.map(entryHTML).join('');
+  };
+  fill('m-experience', typeof EXPERIENCE !== 'undefined' ? EXPERIENCE : []);
+  fill('m-awards', typeof AWARDS !== 'undefined' ? AWARDS : []);
+  fill('m-leadership', typeof LEADERSHIP !== 'undefined' ? LEADERSHIP : []);
+}
+
+/* ---------- phone: nav links scroll instead of navigate ---------- */
+
+function initMobileNav() {
+  const link = document.querySelector('[data-nav="projects"]');
+  if (!link) return;
+  const mq = window.matchMedia('(max-width: 899px)');
+
+  const apply = () => {
+    link.setAttribute('href', mq.matches ? '#all-projects' : 'projects.html');
+  };
+  apply();
+  mq.addEventListener ? mq.addEventListener('change', apply) : mq.addListener(apply);
+
+  /* highlight whichever section is in view */
+  const targets = ['work', 'all-projects', 'contact']
+    .map(id => document.getElementById(id)).filter(Boolean);
+  if (!targets.length || !('IntersectionObserver' in window)) return;
+
+  const linkFor = id => document.querySelector(
+    id === 'contact' ? '[data-nav="contact"]' : '[data-nav="projects"]');
+
+  const spy = new IntersectionObserver(entries => {
+    if (!mq.matches) return;
+    entries.forEach(en => {
+      const a = linkFor(en.target.id);
+      if (!a) return;
+      if (en.isIntersecting) {
+        document.querySelectorAll('.nav__links a').forEach(x => x.classList.remove('active'));
+        a.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-45% 0px -50% 0px' });
+  targets.forEach(t => spy.observe(t));
+}
+
 /* ---------- boot ---------- */
 
 document.addEventListener('DOMContentLoaded', () => {
   renderSocials(document.getElementById('hero-socials'));
   renderContact(document.getElementById('contact-grid'));
   initFeatured();
+  initMobileSections();
+  initMobileNav();
   if (typeof initPage === 'function') initPage();   // page-specific hook
   const y = document.getElementById('year');
   if (y) y.textContent = new Date().getFullYear();
